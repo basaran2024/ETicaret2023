@@ -1,10 +1,11 @@
-﻿using ETicaret.Data.Enum;
+﻿using ETicaret.Data.Base;
+using ETicaret.Data.Enum;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ETicaret.Models
 {
-    public class Movie
+    public class Movie : IEntityBase
     {
         [Key]
         public int Id { get; set; }

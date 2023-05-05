@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ETicaret.Data.Base;
+using System.ComponentModel.DataAnnotations;
 
 namespace ETicaret.Models
 {
-    public class Cinema
+    public class Cinema : IEntityBase
     {
         [Key]
         public int Id { get; set; }

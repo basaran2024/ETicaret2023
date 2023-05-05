@@ -1,23 +1,26 @@
-﻿using ETicaret.Data;
+﻿using ETicaret.Data.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace ETicaret.Controllers
 {
     public class MoviesController : Controller
     {
-        readonly AppDbContext _context;
+        readonly IMoviesService _service;
 
-        public MoviesController(AppDbContext context)
+        public MoviesController(IMoviesService service)
         {
-            _context = context;
+            _service = service;
         }
         public async Task<IActionResult> Index()
         {
-            var data = _context.Movies.Include(n=> n.Cinema).ToListAsync();
+            var data = await _service.GetAllAsync(n=> n.Cinema);            
+            return View(data);
+        }
 
-            
-            return View(await data);
+        public async Task<IActionResult> Details(int id) 
+        {
+            var movie = await _service.GetMovieByIdAsync(id);
+            return View(movie);
         }
     }
 }
