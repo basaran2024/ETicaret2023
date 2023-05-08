@@ -1,4 +1,5 @@
 ﻿using ETicaret.Data.Base;
+using ETicaret.Data.ViewModels;
 using ETicaret.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,6 +22,18 @@ namespace ETicaret.Data.Services
                 .FirstOrDefaultAsync(n => n.Id == id);
 
             return movieDetails;
+        }
+
+        public async Task<MovieDropdownsVM> GetMovieDropdownsVMValues()
+        {
+            var response = new MovieDropdownsVM
+            {
+                Actors = await _context.Actors.OrderBy(n => n.FullName).ToListAsync(),
+                Cinemas = await _context.Cinemas.OrderBy(n => n.Name).ToListAsync(),
+                Producers = await _context.Producers.OrderBy(n => n.FullName).ToListAsync()
+            };
+
+            return response;
         }
     }
 }
