@@ -28,7 +28,6 @@ namespace ETicaret.Controllers
         public async Task<IActionResult> Create() 
         {
 
-
             var movieDdVm = await _service.GetMovieDropdownsVMValues();
 
             ViewBag.Cinemas = new SelectList(movieDdVm.Cinemas, "Id", "Name");
@@ -36,6 +35,40 @@ namespace ETicaret.Controllers
             ViewBag.Actors = new SelectList(movieDdVm.Actors, "Id", "FullName");
 
             return View(new MovieVM());
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Create(MovieVM movie)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                var movieDdVm = await _service.GetMovieDropdownsVMValues();
+
+                ViewBag.Cinemas = new SelectList(movieDdVm.Cinemas, "Id", "Name");
+                ViewBag.Producers = new SelectList(movieDdVm.Producers, "Id", "FullName");
+                ViewBag.Actors = new SelectList(movieDdVm.Actors, "Id", "FullName");
+
+                return View(movie);
+            }
+
+            await _service.AddMovieAsync(movie);
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Filter(string searchString)
+        {
+            var movies = await _service.GetAllAsync(n => n.Cinema);
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                var filteredResult = movies
+                    .Where(n => n.Name.Contains(searchString) || n.Description.Contains(searchString))
+                    .ToList();
+                return View("Index",filteredResult);
+            }
+
+            return View(movies);
         }
     }
 }

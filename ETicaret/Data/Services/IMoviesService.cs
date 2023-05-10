@@ -9,5 +9,7 @@ namespace ETicaret.Data.Services
         Task<Movie> GetMovieByIdAsync(int id);
 
         Task<MovieDropdownsVM> GetMovieDropdownsVMValues();
+
+        Task AddMovieAsync(MovieVM entity);
     }
 }
